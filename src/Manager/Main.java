@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class Main {
     public  static void main(String[] args){
          Scanner keyboard = new Scanner(System.in);
-         char Answer;
+         boolean Answer;
          boolean Answer1;
         ArrayList<Food>ld = new ArrayList<>();
         //Loop until user want to exit
@@ -20,9 +20,9 @@ public class Main {
                         Manager.addFood(ld);
                         System.out.print("Continue? Y/N\n");
 
-                        Answer = keyboard.next().charAt(0);
+                        Answer = Validate.checkInputYN();
                     }
-                    while ( Answer == 'Y' || Answer == 'y' );
+                    while ( Answer == true );
                     break;
                 case 2:
                     Manager.searchFood(ld);

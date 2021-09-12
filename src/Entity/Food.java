@@ -1,23 +1,31 @@
 package Entity;
 
-public class Food {
+import org.jetbrains.annotations.NotNull;
+
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
+
+
+public class Food implements Comparable<Food>  {
     private String ID;
     private int weight;
     private String name;
     private String type;
     private String place;
-    private String expireDate;
+    private LocalDate expireDate;
 
-    public Food(){
+    public Food() {
     }
 
-    public Food(String ID, String name,int weight, String type, String place, String expireDate) {
+    public Food(String ID, String name,int weight, String type, String place, LocalDate expireDate) {
         this.ID = ID;
         this.weight = weight;
         this.name = name;
         this.type = type;
         this.place = place;
-        this.expireDate = expireDate;
+        this.expireDate=expireDate;
     }
 
     public String getID() {
@@ -44,7 +52,7 @@ public class Food {
         return place;
     }
 
-    public String getExpireDate() {
+    public LocalDate getExpireDate() {
         return expireDate;
     }
 
@@ -64,7 +72,23 @@ public class Food {
         this.place = place;
     }
 
-    public void setExpireDate(String expireDate) {
+    public void setExpireDate(LocalDate expireDate) {
         this.expireDate = expireDate;
+    }
+
+    @Override
+    public String toString() {
+        return this.ID + " | " + this.name + " | " + this.weight + " | " + this.type + " | " + this.place + " | " + this.expireDate;
+    }
+
+    @Override
+    public int compareTo(Food t) {
+        if (t.expireDate.isAfter(this.expireDate)) {
+        return 1;
+    } else if (t.expireDate.isBefore(this.expireDate)) {
+        return -1;
+    } else {
+        return 0;
+    }
     }
 }

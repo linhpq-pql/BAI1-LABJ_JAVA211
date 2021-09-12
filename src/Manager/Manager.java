@@ -1,9 +1,19 @@
 package Manager;
 import Entity.Food;
-import java.util.ArrayList;
-import java.util.List;
+//import Ultils.FileUtils;
+//import Ultils.FileUtils;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class Manager {
+
+    private Scanner sc = new Scanner(System.in);
     public static int Menu(){
         System.out.println("Welcome to Food Management - @ 2021 by <SE150083 - Pham Quang Linh \n>");
         System.out.println("Select the option below \n");
@@ -42,13 +52,18 @@ public class Manager {
         System.out.println("Enter the place where put the food \n");
         String place = Validate.checkInputString();
 
-        System.out.println("Enter the expired date \n");
-        String expiredDate = Validate.checkInputString();
+        try {
+            System.out.println("Enter the expired date (Format type : dd-MMM-yyyy) \n");
+            LocalDate expiredDate = LocalDate.parse(Validate.checkInputString(), DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
+            ld.add(new Food(ID, name,weight ,type,place,expiredDate ));
+            System.err.println("Add successful.");
+        }catch(Exception E){
+            System.err.println("Wrong format EXPIRED DATE !");
+        }
 
-        ld.add(new Food(ID, name, weight, type, place ,expiredDate));
-        System.err.println("Add successful.");
+
     }
-    //allow user search doctor
+    //allow user search food
     public static void searchFood(ArrayList<Food> ld) {
         System.out.print("Enter name: ");
         String nameSearch = Validate.checkInputString();
@@ -82,7 +97,7 @@ public class Manager {
         String ID = Validate.checkInputString();
         Food food = getFoodByID(ld, ID);
         if (food == null) {
-            System.err.println("Not found doctor.");
+            System.err.println("Not found food.");
             return;
         } else {
             ld.remove(food);
@@ -90,20 +105,21 @@ public class Manager {
         System.err.println("Delete successful.");
     }
 
-    //get docter by code
+    //get food by code
     public static Food getFoodByID(ArrayList<Food> ld, String ID) {
-        for (Food doctor : ld) {
-            if (doctor.getID().equalsIgnoreCase(ID)) {
-                return doctor;
+        for (Food food : ld) {
+            if (food.getID().equalsIgnoreCase(ID)) {
+                return food;
             }
         }
         return null;
     }
 
-    public static void printFood(ArrayList<Food> ld){
+    public static void printFood(ArrayList<Food> ld) {
         if (ld.isEmpty()) {
             System.err.println("List empty.");
         } else {
+            Collections.sort(ld);
             System.out.printf("%-10s%-15s%-15s%-25s%-20s%-30s\n", "ID", "Name",
                     "Weight", "Type" , "Place" , "ExpiredDate");
             for (Food food : ld) {
@@ -113,6 +129,17 @@ public class Manager {
             }
         }
     }
+
+//    public void storeInFile() throws IllegalArgumentException, IOException, ClassNotFoundException {
+//        sc = new Scanner(System.in);
+//        String filename = "";
+//        System.out.println("Enter your file name");
+//        filename =Validate.checkInputString();
+//        List<Food> foodsCollection = Manager.getFoodsCollection();
+//        FileUtils.writeBinaryFoods(filename, foodsCollection);
+//
+//        List<Food> foodsInFile = FileUtils.readBinaryFoods(filename);
+//        foodsInFile.stream().forEach(food -> System.out.println(food));
 
 }
 
